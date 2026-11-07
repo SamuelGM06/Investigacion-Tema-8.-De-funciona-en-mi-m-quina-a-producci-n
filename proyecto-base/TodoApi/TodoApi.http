@@ -1,0 +1,99 @@
+# Solicitudes de prueba para la extensión REST Client de VS Code.
+# Se ejecutan en orden: primero registrar e iniciar sesión, porque las demás usan el token.
+
+@baseUrl = http://localhost:5289
+@userName = ana
+@password = Prueba123!
+
+### Registrar un usuario
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{ "userName": "{{userName}}", "password": "{{password}}" }
+
+### Iniciar sesión (la respuesta queda guardada como "login")
+# @name login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{ "userName": "{{userName}}", "password": "{{password}}" }
+
+###
+@token = {{login.response.body.token}}
+
+### Crear una categoría
+POST {{baseUrl}}/api/categories
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "name": "Universidad" }
+
+### Listar categorías
+GET {{baseUrl}}/api/categories
+Authorization: Bearer {{token}}
+
+### Crear una tarea con fecha límite (en UTC)
+# @name created
+POST {{baseUrl}}/api/todoitems
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Estudiar para el parcial",
+  "description": "Capítulos 3 y 4",
+  "dueDate": "2026-12-01T18:00:00Z",
+  "categoryId": 1
+}
+
+###
+@id = {{created.response.body.id}}
+
+### Listar mis tareas (filtros opcionales: status, categoryId, overdue)
+GET {{baseUrl}}/api/todoitems?status=Pendiente
+Authorization: Bearer {{token}}
+
+### Consultar una tarea
+GET {{baseUrl}}/api/todoitems/{{id}}
+Authorization: Bearer {{token}}
+
+### Editar título, descripción, fecha límite y categoría (el estado no cambia aquí)
+PUT {{baseUrl}}/api/todoitems/{{id}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Estudiar para el parcial",
+  "description": "Capítulos 3, 4 y 5",
+  "dueDate": "2026-12-02T18:00:00Z",
+  "categoryId": 1
+}
+
+### Cambiar el estado (Pendiente → EnProgreso)
+PATCH {{baseUrl}}/api/todoitems/{{id}}/status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "newStatus": "EnProgreso" }
+
+### Completar, aunque esté vencida
+PATCH {{baseUrl}}/api/todoitems/{{id}}/status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "newStatus": "Completada", "force": true }
+
+### Tareas vencidas sin cerrar
+GET {{baseUrl}}/api/todoitems?overdue=true
+Authorization: Bearer {{token}}
+
+### Estadísticas
+GET {{baseUrl}}/api/todoitems/stats
+Authorization: Bearer {{token}}
+
+### Notificar mis tareas vencidas
+POST {{baseUrl}}/api/todoitems/notificar-vencidas
+Authorization: Bearer {{token}}
+
+### Eliminar la tarea
+DELETE {{baseUrl}}/api/todoitems/{{id}}
+Authorization: Bearer {{token}}
