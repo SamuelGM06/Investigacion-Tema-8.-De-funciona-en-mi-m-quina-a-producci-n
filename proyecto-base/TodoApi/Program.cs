@@ -78,12 +78,31 @@ builder.Services.AddScoped<INotifier, LogNotifier>();
 builder.Services.AddScoped<OverdueNotificationService>();
 builder.Services.AddHostedService<OverdueCheckBackgroundService>();
 
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<TodoDbContext>("database");
+
 var app = builder.Build();
 
-app.UseHttpsRedirection();
+// En contenedores la base arranca vacía: si se habilita, se aplican las migraciones al iniciar.
+if (app.Configuration.GetValue<bool>("Database:MigrateOnStartup"))
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<TodoDbContext>();
+    app.Logger.LogInformation("Aplicando migraciones de base de datos...");
+    db.Database.Migrate();
+}
+
+// Dentro de un contenedor el TLS lo termina el proxy o el hospedaje (Render, Azure),
+// por eso la redirección a HTTPS se puede apagar con HttpsRedirection__Enabled=false.
+if (app.Configuration.GetValue("HttpsRedirection:Enabled", true))
+    app.UseHttpsRedirection();
+
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+// Sonda de salud para docker compose, el pipeline y el hospedaje.
+app.MapHealthChecks("/health");
 
 app.Run();
