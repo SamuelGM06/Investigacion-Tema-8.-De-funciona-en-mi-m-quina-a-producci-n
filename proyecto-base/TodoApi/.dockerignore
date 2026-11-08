@@ -1,0 +1,14 @@
+# Lo que no debe entrar al contexto de build de la imagen
+bin/
+obj/
+**/*.user
+.vs/
+.vscode/
+*.http
+Dockerfile
+.dockerignore
+# Nunca copiar secretos locales a la imagen
+.env
+.env.*
+appsettings.*.local.json
+secrets.json
