@@ -4,6 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>todoapi-tema8-produccion</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
