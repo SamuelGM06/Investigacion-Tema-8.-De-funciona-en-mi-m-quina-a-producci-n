@@ -22,7 +22,7 @@ arquitectura, donde se reorganiza paso a paso.
 
 ## Puesta en marcha
 
-1. Revisar la cadena de conexión en `TodoApi/appsettings.json`.
+1. Configurar la cadena de conexión y la llave JWT con User Secrets (ver «Configuración y secretos»).
    - `LabConnection` es la que usa `Program.cs`, con usuario `sa`.
    - `HomeConnection` usa la autenticación de Windows.
    - Las dos crean una base nueva llamada `TodoApiArquitecturaDB`, así que no hay choque con la
@@ -87,3 +87,44 @@ TodoApi/
 ├── Program.cs
 └── appsettings.json
 ```
+
+## Ejecutar con Docker (recomendado)
+
+Solo se necesita Docker Desktop. Desde la carpeta `proyecto-base/`:
+
+```bash
+cp .env.example .env        # editar MSSQL_SA_PASSWORD y JWT_KEY
+docker compose up --build
+```
+
+| Servicio | URL | Descripción |
+|---|---|---|
+| web | http://localhost:4200 | Angular servido por nginx; `/api` se reenvía a la API |
+| api | http://localhost:8080 | API; `GET /health` devuelve `Healthy` si la base responde |
+| db  | (interno) | SQL Server 2022 con volumen persistente `sqldata` |
+
+Las migraciones se aplican solas al arrancar la API. Para borrar todo, incluidos los datos:
+`docker compose down -v`.
+
+## Configuración y secretos
+
+Ningún secreto vive en el repositorio. `appsettings.json` deja vacíos los valores sensibles y la API
+**no arranca** si faltan:
+
+| Clave | Variable de entorno | Secreto |
+|---|---|---|
+| `ConnectionStrings:DefaultConnection` | `ConnectionStrings__DefaultConnection` | Sí |
+| `Jwt:Key` | `Jwt__Key` | Sí |
+| `Cors:AllowedOrigins` | `Cors__AllowedOrigins__0` | No |
+| `Database:MigrateOnStartup` | `Database__MigrateOnStartup` | No |
+
+Para trabajar sin Docker (`dotnet run`) se usan User Secrets:
+
+```bash
+cd TodoApi
+dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Server=localhost;Database=TodoApiArquitecturaDB;User Id=sa;Password=...;TrustServerCertificate=True"
+dotnet user-secrets set "Jwt:Key" "$(openssl rand -base64 32)"
+```
+
+En GitHub Actions y en el hospedaje los mismos valores se definen como *secrets* / variables de
+entorno del servicio.
