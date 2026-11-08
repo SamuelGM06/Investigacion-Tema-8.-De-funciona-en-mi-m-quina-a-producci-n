@@ -11,6 +11,7 @@ namespace TodoApi.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -238,6 +239,7 @@ namespace TodoApi.Data.Migrations
                 name: "IX_TodoItems_CategoryId",
                 table: "TodoItems",
                 column: "CategoryId");
+                
         }
 
         /// <inheritdoc />
