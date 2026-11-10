@@ -26,3 +26,9 @@ jobs:
 
       - name: Compilar backend
         run: dotnet build proyecto-base/TodoApi/TodoApi.csproj --configuration Release --no-restore
+
+      - name: Restaurar dependencias de pruebas
+        run: dotnet restore proyecto-base/TodoApi.Tests/TodoApi.Tests.csproj
+
+      - name: Ejecutar pruebas automatizadas
+        run: dotnet test proyecto-base/TodoApi.Tests/TodoApi.Tests.csproj --configuration Release --no-restore
