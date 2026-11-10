@@ -480,3 +480,10 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Angular build cache (no debe versionarse)
+.angular/
+
+# Variables de entorno locales con secretos (solo se versiona .env.example)
+.env.*
+!.env.example
