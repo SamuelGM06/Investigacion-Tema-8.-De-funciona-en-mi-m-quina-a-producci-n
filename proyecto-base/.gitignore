@@ -487,3 +487,6 @@ $RECYCLE.BIN/
 # Variables de entorno locales con secretos (solo se versiona .env.example)
 .env.*
 !.env.example
+
+# Salida de compilación de Angular
+dist/

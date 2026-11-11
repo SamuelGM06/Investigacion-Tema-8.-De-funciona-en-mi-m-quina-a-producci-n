@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/app.css"],
-  "sourcesContent": [".app-header {\r\n  display: flex;\r\n  align-items: center;\r\n  padding: 0.9rem 1.5rem;\r\n  background: var(--surface);\r\n  border-bottom: 1px solid var(--line);\r\n}\r\n\r\n.app-title {\r\n  font-weight: 700;\r\n  font-size: 1.1rem;\r\n  color: var(--accent-ink);\r\n}\r\n\r\n.app-main {\r\n  max-width: 720px;\r\n  margin: 0 auto;\r\n  padding: 2rem 1.5rem;\r\n}"],
-  "mappings": ";AAAA,CAAC;AACC,WAAS;AACT,eAAa;AACb,WAAS,OAAO;AAChB,cAAY,IAAI;AAChB,iBAAe,IAAI,MAAM,IAAI;AAC/B;AAEA,CAAC;AACC,eAAa;AACb,aAAW;AACX,SAAO,IAAI;AACb;AAEA,CAAC;AACC,aAAW;AACX,UAAQ,EAAE;AACV,WAAS,KAAK;AAChB;",
-  "names": []
-}

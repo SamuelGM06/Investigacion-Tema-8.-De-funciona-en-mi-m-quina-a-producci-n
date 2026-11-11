@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/pages/login/login.css"],
-  "sourcesContent": [".auth-form {\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 0.4rem;\r\n    max-width: 320px;\r\n}\r\n\r\n.auth-form label {\r\n    font-weight: 600;\r\n    margin-top: 0.6rem;\r\n}\r\n\r\n.auth-form input {\r\n    padding: 0.5rem 0.6rem;\r\n    border: 1px solid var(--line);\r\n    border-radius: 6px;\r\n    font-size: 1rem;\r\n}\r\n\r\n.auth-form button {\r\n    margin-top: 1rem;\r\n    padding: 0.6rem 1rem;\r\n    border: none;\r\n    border-radius: 6px;\r\n    background: var(--accent);\r\n    color: #fff;\r\n    font-weight: 600;\r\n    cursor: pointer;\r\n}\r\n\r\n.field-error {\r\n    color: var(--danger);\r\n    font-size: 0.85rem;\r\n    margin: 0;\r\n}\n\n.auth-switch {\n    margin-top: 1rem;\n    font-size: 0.95rem;\n}\n\n.auth-switch a {\n    color: var(--accent);\n    font-weight: 600;\n}\n"],
-  "mappings": ";AAAA,CAAC;AACG,WAAS;AACT,kBAAgB;AAChB,OAAK;AACL,aAAW;AACf;AAEA,CAPC,UAOU;AACP,eAAa;AACb,cAAY;AAChB;AAEA,CAZC,UAYU;AACP,WAAS,OAAO;AAChB,UAAQ,IAAI,MAAM,IAAI;AACtB,iBAAe;AACf,aAAW;AACf;AAEA,CAnBC,UAmBU;AACP,cAAY;AACZ,WAAS,OAAO;AAChB,UAAQ;AACR,iBAAe;AACf,cAAY,IAAI;AAChB,SAAO;AACP,eAAa;AACb,UAAQ;AACZ;AAEA,CAAC;AACG,SAAO,IAAI;AACX,aAAW;AACX,UAAQ;AACZ;AAEA,CAAC;AACG,cAAY;AACZ,aAAW;AACf;AAEA,CALC,YAKY;AACT,SAAO,IAAI;AACX,eAAa;AACjB;",
-  "names": []
-}
