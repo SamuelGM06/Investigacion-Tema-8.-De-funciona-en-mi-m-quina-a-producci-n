@@ -16,7 +16,12 @@ COPY . ./
 RUN npx ng build --configuration production
 
 FROM nginx:1.27-alpine AS serve
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# nginx procesa /etc/nginx/templates/*.template al arrancar y sustituye las variables
+# de entorno (${PORT}, ${API_UPSTREAM}); el resultado queda en conf.d/default.conf.
+COPY nginx.conf /etc/nginx/templates/default.conf.template
+# Valores por defecto para docker compose; en Render se sobrescriben desde el panel.
+ENV PORT=80 \
+    API_UPSTREAM=http://api:8080
 # El builder @angular/build:application deja los archivos en dist/<proyecto>/browser
 COPY --from=build /app/dist/ToDoApp/browser /usr/share/nginx/html
 EXPOSE 80
