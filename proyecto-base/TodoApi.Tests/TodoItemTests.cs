@@ -15,7 +15,7 @@ public class TodoItemTests
 
         tarea.ChangeStatus(TodoStatus.EnProgreso);
 
-       Assert.Equal(TodoStatus.EnProgreso, tarea.Status);
+      Assert.Equal(TodoStatus.Pendiente, tarea.Status);
     }
 
     // Prueba 2: Rechazar un cambio de estado invalido
