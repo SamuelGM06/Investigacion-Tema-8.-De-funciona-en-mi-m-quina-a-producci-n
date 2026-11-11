@@ -33,3 +33,13 @@
     font-size: 0.85rem;
     margin: 0;
 }
+
+.auth-switch {
+    margin-top: 1rem;
+    font-size: 0.95rem;
+}
+
+.auth-switch a {
+    color: var(--accent);
+    font-weight: 600;
+}
