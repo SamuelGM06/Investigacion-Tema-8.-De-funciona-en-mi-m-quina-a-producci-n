@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/styles.css"],
+  "sourcesContent": [":root {\r\n  --bg: #f7f7fb;\r\n  --surface: #ffffff;\r\n  --ink: #1b1b29;\r\n  --ink-soft: #55546b;\r\n  --line: #e0dff0;\r\n  --accent: #4432c8;\r\n  --accent-ink: #362697;\r\n  --danger: #ad3b3b;\r\n}\r\n\r\n* {\r\n  box-sizing: border-box;\r\n}\r\n\r\nbody {\r\n  margin: 0;\r\n  background: var(--bg);\r\n  color: var(--ink);\r\n  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;\r\n}"],
+  "mappings": ";AAAA;AACE,QAAM;AACN,aAAW;AACX,SAAO;AACP,cAAY;AACZ,UAAQ;AACR,YAAU;AACV,gBAAc;AACd,YAAU;AACZ;AAEA;AACE,cAAY;AACd;AAEA;AACE,UAAQ;AACR,cAAY,IAAI;AAChB,SAAO,IAAI;AACX;AAAA,IAAa,aAAa;AAAA,IAAE,kBAAkB;AAAA,IAAE,UAAU;AAAA,IAAE,MAAM;AAAA,IAAE;AACtE;",
+  "names": []
+}
