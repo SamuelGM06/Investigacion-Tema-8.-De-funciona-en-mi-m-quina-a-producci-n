@@ -24,6 +24,10 @@ export class AuthService {
 
 
 
+    register(credentials: Credentials): Observable<unknown> {
+        return this.http.post(`${environment.apiUrl}/auth/register`, credentials);
+    }
+
     logout() {
         this.setToken(null);
     }
