@@ -127,8 +127,4 @@ dotnet user-secrets set "Jwt:Key" "$(openssl rand -base64 32)"
 ```
 
 En GitHub Actions y en el hospedaje los mismos valores se definen como *secrets* / variables de
-<<<<<<< HEAD
 entorno del servicio. Más detalle en `../docs/integrante-1-contenedores-y-secretos.md`.
-=======
-entorno del servicio.
->>>>>>> 0d0be308dd7c84ee2f20ba293f52d55255c84a6b

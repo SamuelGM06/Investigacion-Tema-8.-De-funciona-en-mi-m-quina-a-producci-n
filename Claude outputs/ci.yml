@@ -1,0 +1,64 @@
+
+name: CI - TodoApi
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  compilar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v7
+
+      - name: Configurar .NET 10
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restaurar dependencias
+        run: dotnet restore proyecto-base/TodoApi/TodoApi.csproj
+
+      - name: Compilar backend
+        run: dotnet build proyecto-base/TodoApi/TodoApi.csproj --configuration Release --no-restore
+
+      - name: Restaurar dependencias de pruebas
+        run: dotnet restore proyecto-base/TodoApi.Tests/TodoApi.Tests.csproj
+
+      - name: Ejecutar pruebas automatizadas
+        run: dotnet test proyecto-base/TodoApi.Tests/TodoApi.Tests.csproj --configuration Release --no-restore
+
+      - name: Construir imagen Docker de la API
+        run: docker build -t todoapi:ci ./proyecto-base/TodoApi
+
+      - name: Construir imagen Docker del front
+        run: docker build -t todoapp-web:ci ./proyecto-base/ToDoApp
+
+  # Despliegue a producción (Render). Solo corre en push a main y solo si el
+  # trabajo anterior (compilar + pruebas + imágenes) terminó bien: si una prueba
+  # falla, este trabajo se omite y el cambio no llega a producción.
+  # Requiere desactivar el Auto-Deploy en Render y crear estos secrets en GitHub:
+  #   RENDER_DEPLOY_HOOK_API, RENDER_DEPLOY_HOOK_WEB
+  desplegar:
+    needs: compilar
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Desplegar API y front en Render
+        env:
+          RENDER_DEPLOY_HOOK_API: ${{ secrets.RENDER_DEPLOY_HOOK_API }}
+          RENDER_DEPLOY_HOOK_WEB: ${{ secrets.RENDER_DEPLOY_HOOK_WEB }}
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK_API" ] || [ -z "$RENDER_DEPLOY_HOOK_WEB" ]; then
+            echo "::error::Faltan los secrets RENDER_DEPLOY_HOOK_API y/o RENDER_DEPLOY_HOOK_WEB"
+            exit 1
+          fi
+          curl -fsS -X POST "$RENDER_DEPLOY_HOOK_API" > /dev/null
+          curl -fsS -X POST "$RENDER_DEPLOY_HOOK_WEB" > /dev/null
+          echo "Despliegue solicitado en Render (API y front)."
