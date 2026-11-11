@@ -12,10 +12,10 @@ Formato: **qué pasó → por qué → qué hicimos → qué aprendimos.**
 
 | # | Decisión | Por qué | Alternativas descartadas |
 |---|---|---|---|
-| D1 | Hospedar en **Render** con imágenes Docker. | Reutiliza las mismas imágenes de `docker compose`; despliegue por *Deploy Hook*; plan gratuito para la demo. | Azure App Service (más caro a escala pequeña), VPS propio (más trabajo de operación y licencia de SQL Server). |
+| D1 | Hospedar en **Render** con imágenes Docker. | Reutiliza las mismas imágenes de `docker compose`; despliegue automático tras pasar los checks de CI; plan gratuito para la demo. | Azure App Service (más caro a escala pequeña), VPS propio (más trabajo de operación y licencia de SQL Server). |
 | D2 | Base de datos **SQL Server en Somee**. | Render no ofrece SQL Server administrado y no queríamos cambiar el código ni las migraciones. | Migrar a PostgreSQL (reescribe el proveedor de EF y las migraciones); SQL Server en contenedor de Render (servicio de pago, unos $25/mes). |
-| D3 | Secretos solo en el panel de Render y en GitHub Secrets. | Principio de configuración del Integrante 1: nada de secretos en el repo. | Variables en `appsettings.json` (ya habían quedado en el historial de git). |
-| D4 | Desactivar el *Auto-Deploy* y desplegar desde el pipeline. | Que un cambio solo llegue a producción si compilan y pasan las pruebas. | Dejar que Render despliegue cada push (se saltaría las pruebas). |
+| D3 | Secretos solo en el panel de Render (y en GitHub Secrets si el pipeline los necesita). | Principio de configuración del Integrante 1: nada de secretos en el repo. | Variables en `appsettings.json` (ya habían quedado en el historial de git). |
+| D4 | *Auto-Deploy* de Render en **After CI Checks Pass**. | Que un cambio solo llegue a producción si compilan y pasan las pruebas, sin secrets ni pasos extra en el workflow. | Auto-Deploy en cada push (se saltaría las pruebas); *Deploy Hook* llamado desde el workflow (más visible en Actions, pero requiere secrets). |
 
 ### Fallos y aprendizajes
 

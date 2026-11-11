@@ -163,7 +163,7 @@ Render con la base en Somee.**
 - Es la más barata ($14.11 frente a $18.14 y $28.80 con 100 usuarios) y la que menos operación
   exige.
 - Reutiliza las mismas imágenes Docker que ya funcionan con `docker compose`, sin cambiar código.
-- El despliegue se dispara desde el pipeline con un *Deploy Hook* y el rollback se hace desde el panel.
+- Render despliega solo cuando pasan los checks de CI (*After CI Checks Pass*) y el rollback se hace desde el panel.
 - Pierde solo 4 puntos frente a Azure en la comparación ponderada (78 frente a 82).
 
 **Cuándo cambiar a B (Azure App Service + Azure SQL):**
@@ -184,11 +184,11 @@ no usar nube; para este proyecto es la más cara en tiempo y tiene el problema d
    variable `API_UPSTREAM` (la URL pública de la API).
 3. Variables de entorno de la API (los valores solo existen en el panel de Render):
    `ConnectionStrings__DefaultConnection`, `Jwt__Key`, `Database__MigrateOnStartup`.
-4. Despliegue automático: el workflow `.github/workflows/ci.yml` compila, ejecuta las pruebas y
-   construye las imágenes. Solo si todo pasa y el push es a `main`, llama a los *Deploy Hooks* de
-   Render (guardados como GitHub Secrets `RENDER_DEPLOY_HOOK_API` y `RENDER_DEPLOY_HOOK_WEB`).
-   El *Auto-Deploy* de Render debe estar desactivado para que no despliegue por su cuenta.
-5. Si las pruebas fallan, el trabajo `desplegar` no se ejecuta: el cambio no llega a producción.
+4. Despliegue automático: en ambos servicios el *Auto-Deploy* de Render está en **After CI Checks
+   Pass**. El workflow `.github/workflows/ci.yml` compila, ejecuta las pruebas y construye las
+   imágenes; Render espera el resultado de esos checks de GitHub y solo despliega el commit de `main`
+   si todos pasan. No se usan *Deploy Hooks* ni secrets adicionales en GitHub.
+5. Si las pruebas fallan, el check queda en rojo y Render no despliega: el cambio no llega a producción.
 
 ## 7. Riesgos conocidos
 
@@ -211,9 +211,9 @@ no usar nube; para este proyecto es la más cara en tiempo y tiene el problema d
   supuestos de la sección 4.
 - *¿Por qué no un servidor propio?* Es lo más caro en tiempo de operación y la licencia Developer de
   SQL Server no permite producción.
-- *¿Cómo evitan que el pipeline despliegue código roto?* El despliegue depende del trabajo de
-  compilación y pruebas; si una prueba falla, el trabajo de despliegue no corre.
-- *¿Dónde están los secretos?* En el panel de Render y en los GitHub Secrets; nunca en el repositorio.
+- *¿Cómo evitan que se despliegue código roto?* Render solo despliega cuando los checks de GitHub
+  Actions (compilar y pruebas) pasan; si una prueba falla, el check queda en rojo y no se despliega.
+- *¿Dónde están los secretos?* En el panel de Render (variables de entorno del servicio); nunca en el repositorio.
 
 ## Fuentes (consultadas el 2026-11-10)
 
