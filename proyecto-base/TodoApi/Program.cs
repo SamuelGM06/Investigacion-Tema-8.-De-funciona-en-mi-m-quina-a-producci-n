@@ -105,4 +105,10 @@ app.MapControllers();
 // Sonda de salud para docker compose, el pipeline y el hospedaje.
 app.MapHealthChecks("/health");
 
+app.MapGet("/api/version", () => new
+{
+    version = "1.0.1",
+    mensaje = "Despliegue automatico exitoso"
+});
+
 app.Run();
