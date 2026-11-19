@@ -30,7 +30,7 @@ namespace TodoApi.Controllers
             if (!result.Succeeded)
                 return BadRequest(result.Errors.Select(e => e.Description));
 
-            return StatusCode(StatusCodes.Status201Created, new { message = "User created successfully" });
+            return StatusCode(StatusCodes.Status201Created, new { message = "Usuario Creado Correctamente" });
         }
 
         [HttpPost("login")]
