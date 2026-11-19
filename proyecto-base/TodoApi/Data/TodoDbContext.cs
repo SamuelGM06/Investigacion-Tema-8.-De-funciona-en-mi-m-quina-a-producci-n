@@ -12,6 +12,6 @@ namespace TodoApi.Data
         }
 
         public DbSet<TodoItem> TodoItems => Set<TodoItem>();
-        public DbSet<Category> Categories => Set<Category>();
+        public DbSet<Category> Categories => S
     }
 }
